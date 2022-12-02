@@ -1,0 +1,3 @@
+username: "bigdata_user"
+pub_key_file: bigdata_user.pub
+ssh_pub_key: "{{ lookup('file', pub_key_file) }}"

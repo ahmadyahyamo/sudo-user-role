@@ -1,0 +1,27 @@
+---
+- name: Ensure user exists
+  user:
+    name: "{{ username }}"
+    state: present
+    generate_ssh_key: no
+    create_home: yes
+- name: Ensure authorized key exsits
+  authorized_key:
+    key: "{{ ssh_pub_key }}"
+    user: "{{ username }}"
+    state: present
+    manage_dir: yes
+- name: Ensure user has sudo rights
+  lineinfile:
+    path: /etc/sudoers.d/{{ username }}
+    line: '{{ username }} ALL=(ALL) NOPASSWD: ALL'
+    state: present
+    mode: 0440
+    create: yes
+    validate: 'visudo -cf %s'
+- name: Ensure sudoers file include sudoers dir
+  lineinfile:
+    dest: /etc/sudoers
+    line: "#includedir /etc/sudoers.d"
+    state: present
+    validate: "/usr/sbin/visudo -cf %s"
