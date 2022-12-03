@@ -18,7 +18,7 @@
     state: present
     mode: 0440
     create: yes
-    validate: 'visudo -cf %s'
+    validate: '/usr/sbin/visudo -cf %s'
 - name: Ensure sudoers file include sudoers dir
   lineinfile:
     dest: /etc/sudoers
